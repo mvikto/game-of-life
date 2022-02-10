@@ -5,7 +5,7 @@ git pull
 yarn
 yarn build
 git checkout gh-pages
-mv -r dist/* .
+mv dist/* .
 git add .
 git commit -m "building time"
 git push
