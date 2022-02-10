@@ -1,4 +1,5 @@
 set -x
+set -e
 
 git checkout master
 git pull
@@ -11,3 +12,4 @@ cp -r dist/* .
 git add .
 git commit -m "building time"
 git push
+git checkout master
