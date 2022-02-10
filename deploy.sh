@@ -2,8 +2,8 @@ set -x
 
 git checkout master
 git pull
-yarn
-yarn build
+pnpm install
+pnpm build
 git checkout gh-pages
 mv dist/* .
 git add .
