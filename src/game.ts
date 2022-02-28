@@ -5,24 +5,24 @@ interface CellState {
 export type GameState = CellState[][];
 
 interface GameStateChange {
-  i: number;
-  j: number;
+  row: number;
+  col: number;
   cellState: CellState;
 }
 
 export const createGameState = (opts?: {
-  width: number;
-  height: number;
+  cols: number;
+  rows: number;
   fill?: (i: number, j: number) => CellState | undefined;
 }): GameState => {
-  const cells = new Array(opts?.height ?? 0);
+  const cells = new Array(opts?.rows ?? 0);
 
-  for (let i = 0; i < cells.length; i++) {
-    const row: CellState[] = new Array(opts?.width ?? 0);
-    for (let j = 0; j < row.length; j++) {
-      row[j] = opts?.fill?.(i, j) ?? { alive: false };
+  for (let rowNr = 0; rowNr < cells.length; rowNr++) {
+    const row: CellState[] = new Array(opts?.cols ?? 0);
+    for (let colNr = 0; colNr < row.length; colNr++) {
+      row[colNr] = opts?.fill?.(rowNr, colNr) ?? { alive: false };
     }
-    cells[i] = row;
+    cells[rowNr] = row;
   }
 
   return cells;
@@ -70,16 +70,16 @@ const getNeigbourLiveCount = (
 
 export const updateGameState = (game: GameState): GameStateChange[] => {
   const r: GameStateChange[] = [];
-  for (let i = 0; i < game.length; i++) {
-    const row = game[i];
-    for (let j = 0; j < row.length; j++) {
-      const cellState = row[j];
-      const neighbourLiveCount = getNeigbourLiveCount(game, i, j);
+  for (let rowNr = 0; rowNr < game.length; rowNr++) {
+    const row = game[rowNr];
+    for (let colNr = 0; colNr < row.length; colNr++) {
+      const cellState = row[colNr];
+      const neighbourLiveCount = getNeigbourLiveCount(game, rowNr, colNr);
       const newCellState = updateCell(cellState, neighbourLiveCount);
       if (cellState.alive !== newCellState.alive) {
         r.push({
-          i,
-          j,
+          row: rowNr,
+          col: colNr,
           cellState: newCellState,
         });
       }
